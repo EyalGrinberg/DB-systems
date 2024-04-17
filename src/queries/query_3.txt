@@ -1,0 +1,7 @@
+SELECT movies.title, movies.revenue
+FROM genres
+JOIN movies_genres ON genres.id = movies_genres.genre_id
+JOIN movies ON movies_genres.movie_id = movies.id 
+WHERE genres.name = '%s'
+ORDER BY movies.revenue DESC 
+LIMIT 10

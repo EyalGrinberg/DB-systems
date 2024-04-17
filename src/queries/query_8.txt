@@ -1,0 +1,5 @@
+SELECT title, rate 
+FROM movies
+WHERE spoken_language = '%s'
+ORDER BY rate DESC
+LIMIT 10 ;

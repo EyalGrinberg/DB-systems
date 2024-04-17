@@ -1,0 +1,7 @@
+SELECT c.name, m.title
+FROM actors a
+join characters c on a.id = c.actor_id
+join movies m on m.id = c.movie_id
+WHERE MATCH (a.name) AGAINST ('%s' IN NATURAL LANGUAGE MODE)
+order by rate desc
+limit 5

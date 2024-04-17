@@ -1,0 +1,13 @@
+SELECT m.title, m.overview, m.rate, m.runtime, m.spoken_language, m.release_date
+FROM movies m
+WHERE m.id IN (
+				(SELECT movies_genres.movie_id
+				FROM movies_genres
+				WHERE genre_id IN (
+									SELECT genre_id
+									FROM genres
+									WHERE name = '%s' )))
+	AND runtime BETWEEN '%s' AND  '%s'
+    AND spoken_language like '%s'
+order by rate desc
+LIMIT 10 ;

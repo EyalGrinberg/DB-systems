@@ -1,0 +1,6 @@
+SELECT genres.name AS genre_name ,AVG(revenue) as genre_mean_revenue
+FROM genres
+JOIN movies_genres ON genres.id = movies_genres.genre_id
+JOIN movies ON movies_genres.movie_id = movies.id 
+GROUP BY genres.name
+ORDER BY genre_mean_revenue DESC ;

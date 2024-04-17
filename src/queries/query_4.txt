@@ -1,0 +1,11 @@
+SELECT m.title AS recommended_movie_title, rate, g.name as genre_name,
+AVG(m.rate) OVER (PARTITION BY extract(year from m.release_date)) AS avg_popularity_by_year,
+AVG(rate) OVER (PARTITION BY g.name) AS avg_popularity_by_genre
+FROM 
+    movies m
+JOIN movies_genres mg on m.id = mg.movie_id
+JOIN genres g on mg.genre_id = g.id 
+ORDER BY 
+    avg_popularity_by_year + avg_popularity_by_genre DESC
+LIMIT 
+    10;

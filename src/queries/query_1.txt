@@ -1,0 +1,32 @@
+WITH matching_title AS 
+(
+SELECT *
+FROM movies m 
+WHERE MATCH (m.title) AGAINST ('%s' IN NATURAL LANGUAGE MODE) 
+LIMIT 1
+)
+
+SELECT m.title, m.overview, m.rate, m.runtime, m.spoken_language, m.release_date
+FROM movies m
+WHERE m.id IN (
+				(SELECT movies_genres.movie_id
+				FROM movies_genres
+				WHERE genre_id IN (
+									SELECT genre_id
+									FROM movies_genres
+									WHERE movie_id = (
+														SELECT mt.id
+														FROM matching_title mt) ) ) )
+	AND 
+		rate BETWEEN 
+				(SELECT mt.rate FROM matching_title mt) - 1
+				AND 
+				(SELECT mt.rate FROM matching_title mt) + 1 
+	AND runtime BETWEEN
+				(SELECT mt.runtime FROM matching_title mt) - 15
+				AND 
+				(SELECT mt.runtime FROM matching_title mt) + 15
+	AND m.id != (
+				SELECT mt.id
+				FROM matching_title mt)
+LIMIT 10 ;

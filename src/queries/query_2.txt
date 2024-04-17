@@ -1,0 +1,7 @@
+SELECT m.title, m.overview
+FROM characters c, movies m
+WHERE c.movie_id = m.id AND c.actor_id = (
+    SELECT a.id 
+    FROM actors a
+    WHERE MATCH (a.name) AGAINST ('%s' IN NATURAL LANGUAGE MODE) 
+    LIMIT 1);
